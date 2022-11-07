@@ -8,6 +8,7 @@ import { addOrder, hasPurchased, fetchItem } from "../util/api";
 
 type BuyProps = {
   itemID: string;
+  seller: string;
 };
 
 type ItemType = {
@@ -21,7 +22,7 @@ const STATUS = {
   Paid: "Paid",
 };
 
-const Buy = ({ itemID }: BuyProps) => {
+const Buy = ({ itemID, seller }: BuyProps) => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
   const [item, setItem] = useState<ItemType>(); // IPFS hash & filename of the purchased item
@@ -46,7 +47,7 @@ const Buy = ({ itemID }: BuyProps) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(order),
+      body: JSON.stringify({ ...order, seller }),
     });
 
     const txData = await txResponse.json();

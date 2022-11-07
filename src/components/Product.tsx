@@ -35,7 +35,7 @@ const Product = ({ product }: ProductProps) => {
 
         <div className={styles.product_action}>
           <div className={styles.product_price}>{price} USDC</div>
-          <Buy itemID={_id} />
+          <Buy itemID={_id} seller={product.seller} />
         </div>
         <p className="seller">
           by{" "}

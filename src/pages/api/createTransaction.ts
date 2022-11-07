@@ -18,8 +18,6 @@ import Products from "../../models/ProductsModel";
 const usdcAddress = new PublicKey(
   "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr"
 );
-const sellerAddress = "AHrRbV5eKdnRfDXoTEa4bSXjfPvAw7MDx4JhZdkZQcmF";
-const sellerPublicKey = new PublicKey(sellerAddress);
 
 type CreateTransactionRes =
   | { transaction: string }
@@ -30,6 +28,8 @@ const createTransaction = async (
   req: NextApiRequest,
   res: NextApiResponse<CreateTransactionRes>
 ) => {
+  const sellerAddress = req.body.seller;
+  const sellerPublicKey = new PublicKey(sellerAddress);
   try {
     await dbConnect();
     // Extract the transaction data from the request body
@@ -92,7 +92,7 @@ const createTransaction = async (
       usdcAddress,
       shopUsdcAddress,
       buyerPublicKey,
-      bigAmount.toNumber() * 10 ** (await usdcMint).decimals,
+      bigAmount.toNumber() * 10 ** usdcMint.decimals,
       usdcMint.decimals
     );
 
