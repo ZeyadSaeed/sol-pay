@@ -1,6 +1,6 @@
 import { useMemo, useState, useEffect } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Keypair, Transaction } from "@solana/web3.js";
+import { ConfirmedSignatureInfo, Keypair, Transaction } from "@solana/web3.js";
 import { RotatingLines } from "react-loader-spinner";
 import IpfsDownload from "./IpfsDownload";
 import { findReference, FindReferenceError } from "@solana/pay";
@@ -86,13 +86,20 @@ const Buy = ({ itemID }: BuyProps) => {
     checkPurchased();
   }, [publicKey, itemID]);
 
+  interface ConfirmedSignatureInfoCustom extends ConfirmedSignatureInfo {
+    confirmationStatus?: string;
+  }
+
   useEffect(() => {
     // Check if transaction was confirmed
     if (status === STATUS.Submitted) {
       setLoading(true);
       const interval = setInterval(async () => {
         try {
-          const result = await findReference(connection, orderID);
+          const result: ConfirmedSignatureInfoCustom = await findReference(
+            connection,
+            orderID
+          );
           if (
             result.confirmationStatus === "confirmed" ||
             result.confirmationStatus === "finalized"
