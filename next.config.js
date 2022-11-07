@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-}
+  images: {
+    domains: ["img-cdn.magiceden.dev", "pbs.twimg.com"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
