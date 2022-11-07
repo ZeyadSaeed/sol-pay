@@ -25,6 +25,12 @@ const App = () => {
   const [creating, setCreating] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    if (creating && !publicKey) {
+      setCreating(false);
+    }
+  }, [creating, publicKey]);
+
   const fetchData = async () => {
     setIsLoading(true);
     const res = await fetch("/api/fetchProducts");
@@ -50,12 +56,12 @@ const App = () => {
             className="create-product-button"
             onClick={() => setCreating(!creating)}
           >
-            {creating ? "Close" : "Create Product"}
+            {!publicKey ? null : creating ? "Close" : "Create Product"}
           </button>
         </header>
 
         <main>
-          {creating && <CreateProduct />}
+          {!publicKey ? null : creating && <CreateProduct />}
           {publicKey ? (
             <RenderItemBuyContainer products={products} isLoading={isLoading} />
           ) : (
